@@ -2,37 +2,55 @@
   <div>
     <div class="task-area">
       <div class="open">
-        <div>
-          <span>未対応</span>
-          <span>{{ tasks.length }}</span>
+        <div class="status">
+          <span class="status-name">未対応</span>
+          <span class="status-count">{{ openTasks.length }}</span>
         </div>
-        <div v-for="task in tasks" v-bind:key="task.name">
-          <div class="task">
-            <p class="task-name">{{ task.name }}</p>
-            <div>
-              <span class="task-assignee">{{ task.assignee }}</span>
-              <span class="task-mandays">{{ task.mandays }}人日</span>
-              <div class="change-status">
-                <span class="status-down">👎</span>
-                <span class="status-up">👍</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <task-card v-bind:task="task" v-for="task in openTasks" v-bind:key="task.name"></task-card>
       </div>
       <div class="doing">
-        <p>test</p>
+        <div class="status">
+          <span class="status-name">処理中</span>
+          <span class="status-count">{{ doingTasks.length }}</span>
+        </div>
+        <task-card v-bind:task="task" v-for="task in doingTasks" v-bind:key="task.name"></task-card>
       </div>
         <div class="closed">
-          <p>test</p>
+        <div class="status">
+          <span class="status-name">完了</span>
+          <span class="status-count">{{ closedTasks.length }}</span>
+        </div>
+        <task-card v-bind:task="task" v-for="task in closedTasks" v-bind:key="task.name"></task-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+let status_filter = {
+  open: function (tasks) {
+    return tasks.filter(function (task) {
+      return task.status === 1;
+    });
+  },
+  doing: function (tasks) {
+    return tasks.filter(function (task) {
+      return task.status === 2;
+    });
+  },
+  closed: function (tasks) {
+    return tasks.filter(function (task) {
+      return task.status === 3;
+    });
+  }
+}
+
+import TaskCard from './components/TaskCard.vue';
 
 export default ({
+  components: {
+    TaskCard: TaskCard,
+  },
   data: function () {
     return {
       tasks: [
@@ -44,6 +62,17 @@ export default ({
       ],
     }
   },
+  computed: {
+    openTasks: function () {
+      return status_filter.open(this.tasks);
+    },
+    doingTasks: function () {
+      return status_filter.doing(this.tasks);
+    },
+    closedTasks: function() {
+      return status_filter.closed(this.tasks);
+    }
+  }
 })
 </script>
 
@@ -52,6 +81,24 @@ export default ({
   display: flex;
   padding-top: 80px;
   padding-left: 170px;
+}
+.status {
+  padding: 10px;
+}
+.status-name {
+  background-color: rgb(212, 212, 212);
+  font-size: 12px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 7px;
+}
+.status-count {
+  background-color: rgb(66, 66, 66);
+  color: #fff;
+  font-size: 12px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 7px;
 }
 .task {
   width: 300px;
@@ -71,8 +118,8 @@ export default ({
   padding: 10px;
 }
 .change-status {
-  border-top: 1px solid rgb(124, 124, 124);
-  border-bottom: 1px solid rgb(124, 124, 124);
+  border-top: 0.5px solid rgb(124, 124, 124);
+  border-bottom: 0.5px solid rgb(124, 124, 124);
 }
 .status-down {
   display: inline-block;
