@@ -5,8 +5,8 @@
       <span class="task-assignee">{{ task.assignee }}</span>
       <span class="task-mandays">{{ task.mandays }}人日</span>
       <div class="change-status">
-        <span class="status-down">👎</span>
-        <span class="status-up">👍</span>
+        <span class="status-down" @click="statusDown(task)">◀</span>
+        <span class="status-up" @click="statusUp(task)">▶</span>
       </div>
     </div>
   </div>
@@ -15,6 +15,18 @@
 <script>
 export default {
   props: ['task'],
+  methods: {
+    statusDown: function (task) {
+      if (task.status !== 1) {
+        task.status -= 1;
+      }
+    },
+    statusUp: function (task) {
+      if (task.status !== 3) {
+        task.status += 1;
+      }
+    }
+  }
 }
 </script>
 
@@ -46,6 +58,8 @@ export default {
   text-align: center;
   margin-top: 3px;
   margin-bottom: 3px;
+  font-size: 26px;
+  color: rgb(32, 141, 214);
 }
 .status-up {
   display: inline-block;
@@ -53,5 +67,7 @@ export default {
   text-align: center;
   margin-top: 3px;
   margin-bottom: 3px;
+  font-size: 26px;
+  color: rgb(32, 141, 214);
 }
 </style>

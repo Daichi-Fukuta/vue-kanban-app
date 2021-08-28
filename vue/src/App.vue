@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div>
+      <span>タスク: </span>
+      <input type="text" v-model="newTaskName">
+      <span>担当者: </span>
+      <input type="text" v-model="newTaskAssignee">
+      <span>人日:</span>
+      <input type="number" v-model="newTaskMandays">
+      <button @click="addTask">追加</button>
+    </div>
     <div class="task-area">
       <div class="open">
         <div class="status">
@@ -60,6 +69,9 @@ export default ({
         { name: 'Task4', status: 2, assignee: '🐹', mandays: 2 },
         { name: 'Task5', status: 3, assignee: '🐰', mandays: 3 },
       ],
+      newTaskName: '',
+      newTaskAssignee: '',
+      newTaskMandays: null,
     }
   },
   computed: {
@@ -71,6 +83,18 @@ export default ({
     },
     closedTasks: function() {
       return status_filter.closed(this.tasks);
+    }
+  },
+  methods: {
+    addTask: function () {
+      this.tasks.push(
+        {
+          name: this.newTaskName,
+          status: 1,
+          assignee: this.newTaskAssignee,
+          mandays: this.newTaskMandays,
+        }
+      )
     }
   }
 })
