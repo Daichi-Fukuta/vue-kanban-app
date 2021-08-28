@@ -15,21 +15,27 @@
           <span class="status-name">未対応</span>
           <span class="status-count">{{ openTasks.length }}</span>
         </div>
-        <task-card v-bind:task="task" v-for="task in openTasks" v-bind:key="task.name"></task-card>
+        <transition-group name="fade">
+          <task-card v-bind:task="task" v-for="task in openTasks" v-bind:key="task.name"></task-card>
+        </transition-group>
       </div>
       <div class="doing">
         <div class="status">
           <span class="status-name">処理中</span>
           <span class="status-count">{{ doingTasks.length }}</span>
         </div>
-        <task-card v-bind:task="task" v-for="task in doingTasks" v-bind:key="task.name"></task-card>
+        <transition-group name="fade">
+          <task-card v-bind:task="task" v-for="task in doingTasks" v-bind:key="task.name"></task-card>
+        </transition-group>
       </div>
         <div class="closed">
         <div class="status">
           <span class="status-name">完了</span>
           <span class="status-count">{{ closedTasks.length }}</span>
         </div>
-        <task-card v-bind:task="task" v-for="task in closedTasks" v-bind:key="task.name"></task-card>
+        <transition-group name="fade">
+          <task-card v-bind:task="task" v-for="task in closedTasks" v-bind:key="task.name"></task-card>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -158,6 +164,12 @@ export default ({
   text-align: center;
   margin-top: 3px;
   margin-bottom: 3px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.4s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 .open {
   width: 500px;
